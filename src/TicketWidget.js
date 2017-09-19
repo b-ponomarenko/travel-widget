@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { fetchFlightsData } from './actionCreators'
+import { fetchFlightsData, setCarrier } from './actionCreators'
 import TicketCard from './TicketCard'
-
-//TODO: Заверстать шаблон для карточек
-//TODO: Добавить фильтрацию по селекту
-//TODO: Возможность сброса выбранного значения?
-//TODO: Возможность сохранения авиаперевозчика через хэш
-//TODO: Простановка выбранного значения в селект (работа с селектом)
 
 class TicketWidget extends Component {
   componentDidMount() {
@@ -16,24 +10,36 @@ class TicketWidget extends Component {
     }
   }
 
+  selectCarrier = ({ target: { value } }) => {
+    this.props.dispatch(setCarrier(value))
+  }
+
   render() {
     const flights = this.props.flights
     const carriers = this.props.carriers
+    const selectedCarrier = this.props.selectedCarrier
+    let filteredFlight = []
+
+    if (selectedCarrier) {
+      filteredFlight = flights.filter(flight => flight.carrier === selectedCarrier)
+    } else {
+      filteredFlight = flights
+    }
 
     return (
       <div className="ticket-widget">
         <h1 className="text-center">TicketWidget</h1>
-        <select>
-          <option>Все авиакомпании</option>
-          {carriers.map(carrier => <option id={carrier.id} key={carrier.id}>{carrier.title}</option>)}
+        <select value={this.props.selectedCarrier} onChange={this.selectCarrier}>
+          <option value="">Все авиакомпании</option>
+          {carriers.map(carrier => <option value={carrier} key={carrier}>{carrier}</option>)}
         </select>
 
-        {flights.map(flight => <TicketCard key={flight.id} flight={ flight } />)}
+        {filteredFlight.map(flight => <TicketCard key={flight.id} flight={ flight } />)}
       </div>
     )
   }
 }
 
-const mapStateToProps = ({ flights, carriers }) => ({ flights, carriers })
+const mapStateToProps = ({ flights, carriers, selectedCarrier }) => ({ flights, carriers, selectedCarrier })
 
 export default connect(mapStateToProps)(TicketWidget)

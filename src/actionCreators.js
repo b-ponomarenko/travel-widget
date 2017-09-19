@@ -1,7 +1,7 @@
-import { ADD_FLIGHTS_DATA } from './actions'
+import { ADD_FLIGHTS_DATA, SET_CARRIER } from './actions'
 
-export function setCarrier () {
-
+export function setCarrier (carrier) {
+  return { type: SET_CARRIER, payload: carrier }
 }
 
 function addFlightsData (flights) {

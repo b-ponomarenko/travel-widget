@@ -1,1 +1,2 @@
 export const ADD_FLIGHTS_DATA = 'ADD_FLIGHTS_DATA'
+export const SET_CARRIER = 'SET_CARRIER'

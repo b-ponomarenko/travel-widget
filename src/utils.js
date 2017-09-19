@@ -3,5 +3,5 @@ export function getCarriers(flights) {
 
   flights.forEach(flight => carriersHash[flight.carrier] = flight.carrier);
 
-  return Object.keys(carriersHash).map(carrier => ({ title: carrier, id: Math.random()*1000 }));
+  return Object.keys(carriersHash);
 }
